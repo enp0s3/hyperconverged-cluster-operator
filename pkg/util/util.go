@@ -59,6 +59,13 @@ func CheckPrimaryUDNImageEnvExists() error {
 	return nil
 }
 
+func CheckWaspAgentImageEnvExists() error {
+	if _, exists := os.LookupEnv(WaspAgentImageEnvV); !exists {
+		return fmt.Errorf("%s env var not found", WaspAgentImageEnvV)
+	}
+	return nil
+}
+
 func IsRunModeLocal() bool {
 	return os.Getenv(ForceRunModeEnv) == string(LocalRunMode)
 }

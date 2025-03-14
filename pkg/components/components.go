@@ -85,6 +85,7 @@ type DeploymentOperatorParams struct {
 	MtqVersion             string
 	AaqVersion             string
 	PrimaryUDNImage        string
+	WaspAgentImage         string
 	Env                    []corev1.EnvVar
 }
 
@@ -294,6 +295,10 @@ func buildEnvVars(params *DeploymentOperatorParams) []corev1.EnvVar {
 		{
 			Name:  util.PrimaryUDNImageEnvV,
 			Value: params.PrimaryUDNImage,
+		},
+		{
+			Name:  util.WaspAgentImageEnvV,
+			Value: params.WaspAgentImage,
 		},
 	}, params.Env...)
 

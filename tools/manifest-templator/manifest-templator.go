@@ -76,6 +76,7 @@ var (
 	hppoVersion             = flag.String("hppo-version", "", "HPP operator version")
 	aaqVersion              = flag.String("aaq-version", "", "AAQ operator version")
 	primaryUDNImage         = flag.String("primary-udn-binding-image-name", "", "Primary UDN binding image")
+	waspAgentImage          = flag.String("wasp-agent-image-name", "", "wasp-agent image")
 	apiSources              = flag.String("api-sources", cwd+"/...", "Project sources")
 )
 
@@ -431,6 +432,7 @@ func getOperatorParameters() *components.DeploymentOperatorParams {
 		HppoVersion:            *hppoVersion,
 		AaqVersion:             *aaqVersion,
 		PrimaryUDNImage:        *primaryUDNImage,
+		WaspAgentImage:         *waspAgentImage,
 		Env:                    []corev1.EnvVar{},
 	}
 	return params

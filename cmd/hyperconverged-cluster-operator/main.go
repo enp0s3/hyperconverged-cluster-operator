@@ -242,6 +242,9 @@ func main() {
 	err = hcoutil.CheckPrimaryUDNImageEnvExists()
 	cmdHelper.ExitOnError(err, "failed to retrieve primary UDN env var")
 
+	err = hcoutil.CheckWaspAgentImageEnvExists()
+	cmdHelper.ExitOnError(err, "failed to retrieve wasp agent image env var")
+
 	logger.Info("Starting the Cmd.")
 	eventEmitter.EmitEvent(nil, corev1.EventTypeNormal, "Init", "Starting the HyperConverged Pod")
 
