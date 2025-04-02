@@ -74,7 +74,7 @@ var (
 	sspVersion              = flag.String("ssp-version", "", "SSP operator version")
 	hppoVersion             = flag.String("hppo-version", "", "HPP operator version")
 	aaqVersion              = flag.String("aaq-version", "", "AAQ operator version")
-	_                       = flag.String("primary-udn-binding-image-name", "", "deprecated. This flag is ignored")
+	waspAgentImage          = flag.String("wasp-agent-image-name", "", "wasp-agent image")
 	apiSources              = flag.String("api-sources", cwd+"/...", "Project sources")
 )
 
@@ -429,6 +429,7 @@ func getOperatorParameters() *components.DeploymentOperatorParams {
 		SspVersion:             *sspVersion,
 		HppoVersion:            *hppoVersion,
 		AaqVersion:             *aaqVersion,
+		WaspAgentImage:         *waspAgentImage,
 		Env:                    []corev1.EnvVar{},
 	}
 	return params

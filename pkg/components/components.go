@@ -82,6 +82,7 @@ type DeploymentOperatorParams struct {
 	HppoVersion            string
 	MtqVersion             string
 	AaqVersion             string
+	WaspAgentImage         string
 	Env                    []corev1.EnvVar
 }
 
@@ -287,6 +288,10 @@ func buildEnvVars(params *DeploymentOperatorParams) []corev1.EnvVar {
 		{
 			Name:  util.KVUIProxyImageEnvV,
 			Value: params.KVUIProxyImage,
+		},
+		{
+			Name:  util.WaspAgentImageEnvV,
+			Value: params.WaspAgentImage,
 		},
 	}, params.Env...)
 

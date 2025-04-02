@@ -3268,6 +3268,7 @@ spec:
                   value: quay.io/kubevirt-ui/kubevirt-plugin@sha256:9656716bf6aca3ae2b81d28de6d228c1797d3f81934ccd862854be62a895cc2a
                 - name: KV_CONSOLE_PROXY_IMAGE
                   value: quay.io/kubevirt-ui/kubevirt-apiserver-proxy@sha256:935475c2850466aa5ac57e4de627fb177515cb2c402a95842ead095d82b6df5f
+                - name: WASP_AGENT_IMAGE
                 image: quay.io/kubevirt/hyperconverged-cluster-operator:1.15.0-unstable
                 imagePullPolicy: IfNotPresent
                 livenessProbe:
@@ -4849,6 +4850,8 @@ spec:
     name: virt-operator
   - image: quay.io/kubevirt/virtio-container-disk@sha256:bf2c634591d7fca1b90479785084fa108a66fe9da6777c4312bb4f57cc837faa
     name: virtio-container-disk
+  - image: quay.io/openshift-virtualization/wasp-agent@sha256:f9a4c45e4c47c9827afcf1415a43cd87728096de70f50012e31e028e21be6e7d
+    name: wasp-agent
   replaces: kubevirt-hyperconverged-operator.v1.14.0
   selector:
     matchLabels:

@@ -97,6 +97,7 @@ var (
 	kvUIProxyImage      = flag.String("kubevirt-consoleproxy-image-name", "", "KubeVirt Console Proxy image")
 	kvVirtIOWinImage    = flag.String("kv-virtiowin-image-name", "", "KubeVirt VirtIO Win image")
 	_                   = flag.String("primary-udn-binding-image-name", "", "deprecated. This flag is ignored")
+	waspAgentImage      = flag.String("wasp-agent-image-name", "", "Wasp Agent image")
 	smbios              = flag.String("smbios", "", "Custom SMBIOS string for KubeVirt ConfigMap")
 	machinetype         = flag.String("machinetype", "", "Custom MACHINETYPE string for KubeVirt ConfigMap (Deprecated, use amd64-machinetype)")
 	amd64MachineType    = flag.String("amd64-machinetype", "", "Custom AMD64_MACHINETYPE string for KubeVirt ConfigMap")
@@ -528,6 +529,7 @@ func getDeploymentParams() *components.DeploymentOperatorParams {
 		SspVersion:             *sspVersion,
 		HppoVersion:            *hppoVersion,
 		AaqVersion:             *aaqVersion,
+		WaspAgentImage:         *waspAgentImage,
 		Env:                    envVars,
 	}
 }
