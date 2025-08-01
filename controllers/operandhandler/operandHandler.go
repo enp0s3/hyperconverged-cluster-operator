@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"time"
 
+	wasp_agent "github.com/kubevirt/hyperconverged-cluster-operator/controllers/handlers/wasp-agent"
+
 	"golang.org/x/sync/errgroup"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -56,6 +58,11 @@ func NewOperandHandler(client client.Client, scheme *runtime.Scheme, ci hcoutil.
 		handlers.NewAAQHandler(client, scheme),
 		passt.NewPasstDaemonSetHandler(client, scheme),
 		passt.NewPasstNetworkAttachmentDefinitionHandler(client, scheme),
+		wasp_agent.NewServiceAccountHandler(client, scheme),
+		wasp_agent.NewClusterRoleHandler(client, scheme),
+		wasp_agent.NewClusterRoleBindingHandler(client, scheme),
+		wasp_agent.NewSecurityContextConstraintHandler(client, scheme),
+		wasp_agent.NewDaemonSetHandler(client, scheme),
 	}
 
 	if ci.IsOpenshift() {

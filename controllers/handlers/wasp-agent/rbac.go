@@ -1,0 +1,113 @@
+package wasp_agent
+
+import (
+	rbacv1 "k8s.io/api/rbac/v1"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/runtime"
+	"sigs.k8s.io/controller-runtime/pkg/client"
+
+	hcov1beta1 "github.com/kubevirt/hyperconverged-cluster-operator/api/v1beta1"
+	"github.com/kubevirt/hyperconverged-cluster-operator/controllers/operands"
+)
+
+func NewClusterRoleBindingHandler(Client client.Client, Scheme *runtime.Scheme) operands.Operand {
+	return operands.NewConditionalHandler(
+		operands.NewClusterRoleBindingHandler(Client, Scheme, newClusterRoleBinding),
+		shouldDeployWaspAgent,
+		func(hc *hcov1beta1.HyperConverged) client.Object {
+			return newClusterRoleBindingWithNameOnly(hc)
+		},
+	)
+}
+
+func newClusterRoleBinding(hc *hcov1beta1.HyperConverged) *rbacv1.ClusterRoleBinding {
+	return &rbacv1.ClusterRoleBinding{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "rbac.authorization.k8s.io/v1",
+			Kind:       "ClusterRoleBinding",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:   clusterRoleName,
+			Labels: operands.GetLabels(hc, AppComponentWaspAgent),
+		},
+		RoleRef: rbacv1.RoleRef{
+			Kind:     "ClusterRole",
+			Name:     clusterRoleName,
+			APIGroup: "rbac.authorization.k8s.io",
+		},
+		Subjects: []rbacv1.Subject{
+			{
+				Kind:      "ServiceAccount",
+				Name:      waspAgentServiceAccountName,
+				Namespace: hc.Namespace,
+			},
+		},
+	}
+}
+
+func newClusterRoleBindingWithNameOnly(hc *hcov1beta1.HyperConverged) *rbacv1.ClusterRoleBinding {
+	return &rbacv1.ClusterRoleBinding{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "rbac.authorization.k8s.io/v1",
+			Kind:       "ClusterRoleBinding",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:   clusterRoleName,
+			Labels: operands.GetLabels(hc, AppComponentWaspAgent),
+		},
+	}
+}
+
+func NewClusterRoleHandler(Client client.Client, Scheme *runtime.Scheme) operands.Operand {
+	return operands.NewConditionalHandler(
+		operands.NewClusterRoleHandler(Client, Scheme, newClusterRole),
+		shouldDeployWaspAgent,
+		func(hc *hcov1beta1.HyperConverged) client.Object {
+			return newClusterRoleWithNameOnly(hc)
+		},
+	)
+}
+
+func newClusterRole(hc *hcov1beta1.HyperConverged) *rbacv1.ClusterRole {
+	return &rbacv1.ClusterRole{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "rbac.authorization.k8s.io/v1",
+			Kind:       "ClusterRole",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:   clusterRoleName,
+			Labels: operands.GetLabels(hc, AppComponentWaspAgent),
+		},
+		Rules: getClusterPolicyRules(),
+	}
+}
+
+func newClusterRoleWithNameOnly(hc *hcov1beta1.HyperConverged) *rbacv1.ClusterRole {
+	return &rbacv1.ClusterRole{
+		TypeMeta: metav1.TypeMeta{
+			APIVersion: "rbac.authorization.k8s.io/v1",
+			Kind:       "ClusterRole",
+		},
+		ObjectMeta: metav1.ObjectMeta{
+			Name:   clusterRoleName,
+			Labels: operands.GetLabels(hc, AppComponentWaspAgent),
+		},
+	}
+}
+
+func getClusterPolicyRules() []rbacv1.PolicyRule {
+	return []rbacv1.PolicyRule{
+		{
+			APIGroups: []string{
+				"",
+			},
+			Resources: []string{
+				"pods",
+			},
+			Verbs: []string{
+				"watch",
+				"list",
+			},
+		},
+	}
+}
