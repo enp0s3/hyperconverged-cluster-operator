@@ -260,6 +260,9 @@ func main() {
 	err = passt.CheckPasstImagesEnvExists()
 	cmdHelper.ExitOnError(err, "failed to retrieve passt env vars")
 
+	err = checkWaspAgentImageEnvExists()
+	cmdHelper.ExitOnError(err, "failed to retrieve wasp agent image env var")
+
 	logger.Info("Starting the Cmd.")
 	eventEmitter.EmitEvent(nil, corev1.EventTypeNormal, "Init", "Starting the HyperConverged Pod")
 
@@ -443,4 +446,11 @@ func createPriorityClass(ctx context.Context, mgr manager.Manager) error {
 	}
 
 	return err
+}
+
+func checkWaspAgentImageEnvExists() error {
+	if _, exists := os.LookupEnv(hcoutil.WaspAgentImageEnvV); !exists {
+		return fmt.Errorf("%s env var not found", hcoutil.WaspAgentImageEnvV)
+	}
+	return nil
 }

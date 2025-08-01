@@ -74,6 +74,8 @@ spec:
           value: quay.io/kubevirt/network-passt-binding@sha256:e16444bdfd3b1a757b6a6ebc7c6c4de068d963bfd02dd93bda016fff7ed04b51
         - name: PASST_CNI_IMAGE
           value: quay.io/kubevirt/network-passt-binding-cni@sha256:8e9a0fe4c0096abfea49f4eb36038842621bcb770ab6358ff5a6315016b6a243
+        - name: WASP_AGENT_IMAGE
+          value: quay.io/openshift-virtualization/wasp-agent@sha256:3e5e9754eeda9bef4c90323929908fd177dcfac3ef207b495e0cd1f437071418
         image: quay.io/kubevirt/hyperconverged-cluster-operator:1.16.0-unstable
         imagePullPolicy: Always
         livenessProbe:
